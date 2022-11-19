@@ -2,11 +2,11 @@ version: "3"
 
 services:
   server:
-    container_name: go-scraping-server
+    container_name: goscraping-server
     restart: always
     tty: true
 
   database:
-    container_name: go-scraping-database
+    container_name: goscraping-database
     restart: always
     tty: true

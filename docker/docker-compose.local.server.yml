@@ -3,7 +3,7 @@ version: "3"
 services:
   server:
     build:
-      context: ../server
+      context: ../src
       dockerfile: Dockerfile
     ports:
       - 8080:8080
