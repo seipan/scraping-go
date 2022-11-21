@@ -14,7 +14,7 @@ type Article struct {
 	Kind   string
 }
 
-func CreateHistory(db *sql.DB, user_id string, article_id int) (*Article, error) {
+func CreateArticle(db *sql.DB, article *Article) (*Article, error) {
 	statement := "INSERT INTO histories (user_id, article_id) VALUES($1,$2) returning user_id, article_id, created_at"
 
 	stmt, err := db.Prepare(statement)
@@ -25,12 +25,12 @@ func CreateHistory(db *sql.DB, user_id string, article_id int) (*Article, error)
 	defer stmt.Close()
 
 	stmt.Exec()
-	article := &Article{}
+	resarticle := &Article{}
 
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
 	}
 
-	return article, nil
+	return resarticle, nil
 }
