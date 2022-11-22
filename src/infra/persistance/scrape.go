@@ -15,7 +15,7 @@ type Article struct {
 }
 
 func CreateArticle(db *sql.DB, article *Article) (*Article, error) {
-	statement := "INSERT INTO histories (user_id, article_id) VALUES($1,$2) returning user_id, article_id, created_at"
+	statement := "INSERT INTO articles (id, title, body, url) VALUES($1,$2,$3,$4)"
 
 	stmt, err := db.Prepare(statement)
 	if err != nil {
