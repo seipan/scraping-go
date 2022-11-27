@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/seipan/scraping-go/utils"
+	"github.com/seipan/scraping-go/domain"
 )
 
-func CreateArticle(db *sql.DB, article *utils.Article) (*utils.Article, error) {
+func CreateArticle(db *sql.DB, article *domain.Article) (*domain.Article, error) {
 	statement := "INSERT INTO articles (id, title, body, url) VALUES($1,$2,$3,$4)"
 
 	stmt, err := db.Prepare(statement)
@@ -18,7 +18,7 @@ func CreateArticle(db *sql.DB, article *utils.Article) (*utils.Article, error) {
 	defer stmt.Close()
 
 	stmt.Exec()
-	resarticle := &utils.Article{}
+	resarticle := &domain.Article{}
 
 	if err != nil {
 		log.Println(err.Error())

@@ -4,11 +4,11 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/seipan/scraping-go/utils"
+	"github.com/seipan/scraping-go/config"
 )
 
 func NewDriver() (*sql.DB, error) {
-	dbDSN, err := utils.DSN()
+	dbDSN, err := config.DSN()
 	if err != nil {
 		return nil, err
 	}
