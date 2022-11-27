@@ -6,11 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/seipan/scraping-go/domain"
 	"github.com/seipan/scraping-go/scrape"
 )
 
-func GetQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
+func GetQiitaArticle(page int, per_page int, articleChan chan []Article) {
 	endpoint := "http://qiita.com/api/v2/users/snaka/items"
 
 	values := url.Values{}
@@ -23,7 +22,7 @@ func GetQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
 		panic(err)
 	}
 
-	Respon := &domain.Article{}
+	var Respon []Article
 
 	if err := json.Unmarshal(data, &Respon); err != nil {
 		panic(err)
@@ -31,7 +30,7 @@ func GetQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
 
 	articleChan <- Respon
 }
-func GetParallelQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
+func GetParallelQiitaArticle(page int, per_page int, articleChan chan []Article) {
 	endpoint := "http://qiita.com/api/v2/users/snaka/items"
 
 	values := url.Values{}
@@ -43,7 +42,7 @@ func GetParallelQiitaArticle(page int, per_page int, articleChan chan *domain.Ar
 	go scrape.DoAPIParallel("GET", endpoint, values, nil, ch)
 	data := <-ch
 
-	Respon := &domain.Article{}
+	var Respon []Article
 
 	if err := json.Unmarshal(data, &Respon); err != nil {
 		panic(err)
