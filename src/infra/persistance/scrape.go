@@ -3,18 +3,11 @@ package persistance
 import (
 	"database/sql"
 	"log"
+
+	"github.com/seipan/scraping-go/utils"
 )
 
-type Article struct {
-	Id     int
-	Title  string
-	Likes  int
-	Url    string
-	Author string
-	Kind   string
-}
-
-func CreateArticle(db *sql.DB, article *Article) (*Article, error) {
+func CreateArticle(db *sql.DB, article *utils.Article) (*utils.Article, error) {
 	statement := "INSERT INTO articles (id, title, body, url) VALUES($1,$2,$3,$4)"
 
 	stmt, err := db.Prepare(statement)
@@ -25,7 +18,7 @@ func CreateArticle(db *sql.DB, article *Article) (*Article, error) {
 	defer stmt.Close()
 
 	stmt.Exec()
-	resarticle := &Article{}
+	resarticle := &utils.Article{}
 
 	if err != nil {
 		log.Println(err.Error())
