@@ -34,4 +34,28 @@ func DoAPI(method, path string, values url.Values, body io.Reader) ([]byte, erro
 	return data, nil
 }
 
+func DoAPIParallel(method, path string, values url.Values, body io.Reader, c chan []byte) {
+	client := &http.Client{
+		Timeout: 20 * time.Second,
+	}
 
+	req, err := http.NewRequest(method, path, body)
+	if err != nil {
+		panic(err)
+	}
+
+	req.URL.RawQuery = values.Encode()
+
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	c <- data
+}

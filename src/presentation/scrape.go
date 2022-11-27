@@ -2,7 +2,6 @@ package presentation
 
 import (
 	"encoding/json"
-	"log"
 	"net/url"
 	"strconv"
 	"time"
@@ -11,7 +10,7 @@ import (
 	"github.com/seipan/scraping-go/scrape"
 )
 
-func GetQiitaArticle(page int, per_page int) *domain.Article {
+func GetQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
 	endpoint := "http://qiita.com/api/v2/users/snaka/items"
 
 	values := url.Values{}
@@ -21,19 +20,36 @@ func GetQiitaArticle(page int, per_page int) *domain.Article {
 
 	data, err := scrape.DoAPI("GET", endpoint, values, nil)
 	if err != nil {
-		log.Println("DoAPI Error() = %w", err)
-		return nil
+		panic(err)
 	}
 
 	Respon := &domain.Article{}
 
 	if err := json.Unmarshal(data, &Respon); err != nil {
-		log.Println("DoAPI Error() = %w", err)
-		return nil
+		panic(err)
 	}
 
-	return Respon
+	articleChan <- Respon
+}
+func GetParallelQiitaArticle(page int, per_page int, articleChan chan *domain.Article) {
+	endpoint := "http://qiita.com/api/v2/users/snaka/items"
 
+	values := url.Values{}
+	values.Set("page", strconv.Itoa(page))
+	values.Add("per_page", strconv.Itoa(per_page))
+
+	ch := make(chan []byte)
+
+	go scrape.DoAPIParallel("GET", endpoint, values, nil, ch)
+	data := <-ch
+
+	Respon := &domain.Article{}
+
+	if err := json.Unmarshal(data, &Respon); err != nil {
+		panic(err)
+	}
+
+	articleChan <- Respon
 }
 
 type Article struct {
