@@ -9,9 +9,10 @@ import (
 	"github.com/seipan/scraping-go/utils"
 )
 
-func GetParallelQiitaArticle(page int, per_page int) []*domain.Article {
+func GetParallelQiitaArticle() {
 	log.Println("---------------------------")
-	page = 100
+	page := 100
+	per_page := 100
 
 	articleChan := make(chan []presentation.Article, per_page*page)
 	var wg sync.WaitGroup
@@ -35,10 +36,12 @@ func GetParallelQiitaArticle(page int, per_page int) []*domain.Article {
 	}
 
 	log.Println("---------------------------")
-
-	return ResArticle
 }
 
 func main() {
-	log.Println("Hello")
+	per_page := 100
+	//var avgRuntime time.Duration
+
+	avgRuntime := utils.CalcAvgRuntime(GetParallelQiitaArticle, per_page)
+	log.Println(avgRuntime)
 }
