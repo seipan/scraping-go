@@ -1,10 +1,18 @@
 package domain
 
+import "time"
+
 type Article struct {
-	Id     int
-	Title  string
-	Likes  int
-	Url    string
-	Author string
-	Kind   string
+	Body       string
+	CreatedAt  time.Time
+	ID         string
+	LikesCount int
+	Title      string
+	URL        string
+	User
+}
+
+type User struct {
+	ID   string
+	Name string
 }
