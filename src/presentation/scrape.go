@@ -31,7 +31,7 @@ func GetQiitaArticle(page int, per_page int, articleChan chan []Article) {
 	articleChan <- Respon
 }
 func GetParallelQiitaArticle(page int, per_page int, articleChan chan []Article) {
-	endpoint := "http://qiita.com/api/v2/users/snaka/items"
+	endpoint := "https://qiita.com/api/v2/items"
 
 	values := url.Values{}
 	values.Set("page", strconv.Itoa(page))
