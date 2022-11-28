@@ -6,9 +6,10 @@ import (
 
 	"github.com/seipan/scraping-go/domain"
 	"github.com/seipan/scraping-go/presentation"
+	"github.com/seipan/scraping-go/utils"
 )
 
-func GetParallelQiitaArticle(page int, per_page int) *[]domain.Article {
+func GetParallelQiitaArticle(page int, per_page int) []*domain.Article {
 	log.Println("---------------------------")
 	page = 100
 
@@ -27,10 +28,15 @@ func GetParallelQiitaArticle(page int, per_page int) *[]domain.Article {
 
 	for articles := range articleChan {
 		for _, article := range articles {
-			ResArticle = append(ResArticle, articles)
-
+			log.Println("GetArticle   " + article.Title)
+			domArticle := utils.JsonToDomain(article)
+			ResArticle = append(ResArticle, &domArticle)
 		}
 	}
+
+	log.Println("---------------------------")
+
+	return ResArticle
 }
 
 func main() {

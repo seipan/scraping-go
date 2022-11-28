@@ -5,7 +5,7 @@ import (
 	"github.com/seipan/scraping-go/presentation"
 )
 
-func NewArticleResponse(article *presentation.Article) domain.Article {
+func JsonToDomain(article presentation.Article) domain.Article {
 	resUser := domain.User{}
 	resUser.ID = article.User.ID
 	resUser.Name = article.User.Name
