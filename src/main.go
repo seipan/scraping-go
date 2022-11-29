@@ -4,6 +4,8 @@ import (
 	"log"
 	"sync"
 
+	"github.com/seipan/scraping-go/infra/db"
+	"github.com/seipan/scraping-go/infra/persistance"
 	"github.com/seipan/scraping-go/presentation"
 	"github.com/seipan/scraping-go/utils"
 )
@@ -36,10 +38,20 @@ func GetParallelQiitaArticle() {
 	log.Println("---------------------------")
 }
 
-func main() {
-	per_page := 100
-	//var avgRuntime time.Duration
+func InsertQiitaArticle(articles []presentation.Article) {
+	db, err := db.NewDriver()
+	if err != nil {
+		panic(err)
+	}
 
-	avgRuntime := utils.CalcTime(GetParallelQiitaArticle, per_page)
-	log.Println(avgRuntime)
+	for _, article := range articles {
+		domarticle := utils.JsonToDomain(article)
+		persistance.CreateArticle(db, domarticle)
+	}
+}
+
+func main() {
+
+	time := utils.Measurer(GetParallelQiitaArticle)
+	log.Println(time)
 }

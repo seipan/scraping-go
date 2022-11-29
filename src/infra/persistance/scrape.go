@@ -7,7 +7,7 @@ import (
 	"github.com/seipan/scraping-go/domain"
 )
 
-func CreateArticle(db *sql.DB, article *domain.Article) (*domain.Article, error) {
+func CreateArticle(db *sql.DB, article domain.Article) (*domain.Article, error) {
 	statement := "INSERT INTO articles (id, title, body, url) VALUES($1,$2,$3,$4)"
 
 	stmt, err := db.Prepare(statement)
