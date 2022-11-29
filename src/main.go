@@ -10,7 +10,7 @@ import (
 	"github.com/seipan/scraping-go/utils"
 )
 
-func GetParallelQiitaArticle() {
+func GetParallelQiitaArticle() []presentation.Article {
 	log.Println("---------------------------")
 	page := 100
 	per_page := 100
@@ -36,6 +36,8 @@ func GetParallelQiitaArticle() {
 	}
 
 	log.Println("---------------------------")
+
+	return ResArticle
 }
 
 func InsertQiitaArticle(articles []presentation.Article) {
@@ -51,7 +53,8 @@ func InsertQiitaArticle(articles []presentation.Article) {
 }
 
 func main() {
-
-	time := utils.Measurer(GetParallelQiitaArticle)
+	time, article := utils.Measurer(GetParallelQiitaArticle)
 	log.Println(time)
+
+	InsertQiitaArticle(article)
 }
