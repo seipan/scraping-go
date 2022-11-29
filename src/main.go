@@ -14,12 +14,8 @@ func GetParallelQiitaArticle() {
 	page := 100
 	per_page := 100
 
-	log.Println("1")
-
 	articleChan := make(chan []presentation.Article, per_page*page)
 	var wg sync.WaitGroup
-
-	log.Println("2")
 
 	for i := 0; i < page; i++ {
 		wg.Add(1)
@@ -27,11 +23,7 @@ func GetParallelQiitaArticle() {
 		wg.Done()
 	}
 
-	log.Println("3")
-
 	wg.Wait()
-
-	log.Println("4")
 
 	var ResArticle []*domain.Article
 
@@ -43,8 +35,6 @@ func GetParallelQiitaArticle() {
 		}
 	}
 
-	log.Println("4")
-
 	log.Println("---------------------------")
 }
 
@@ -52,6 +42,6 @@ func main() {
 	per_page := 100
 	//var avgRuntime time.Duration
 
-	avgRuntime := utils.CalcAvgRuntime(GetParallelQiitaArticle, per_page)
+	avgRuntime := utils.CalcTime(GetParallelQiitaArticle, per_page)
 	log.Println(avgRuntime)
 }
